@@ -1,3 +1,9 @@
+PWD=`pwd`
+project := $(shell basename $$PWD | tr '[:upper:]' '[:lower:]')
+image_name="${project}-image"
+container_name="${project}-container"
+DOCKERFILE=Dockerfile
+
 build-image:
 	docker build \
 		--tag ${image_name} \

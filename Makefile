@@ -10,9 +10,13 @@ build-image:
 		-f ${DOCKERFILE} \
 		.
 
+stop-container:
+	docker stop ${container_name}
+
+rm-container:
+	docker rm ${container_name}
+
 run-container:
-	docker stop ${container_name} &&\
-	docker rm ${container_name} &&\
-	docker run -ti -p 8888:8888 -v ${PWD}:/home/jovyan/ ${image_name}
+	docker run --name ${container_name} -ti -p 8888:8888 -v ${PWD}:/home/jovyan/ ${image_name}
 
 run: build-image run-container

@@ -1,2 +1,4 @@
 hello world agent fails @ `finrl.autotrain.training.train_one()`
     see `hello_agent.ipynb`
+    
+modules cannot import https://github.com/quantopian/zipline package properly, reinstall?

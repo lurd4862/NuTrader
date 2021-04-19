@@ -19,4 +19,4 @@ rm-container:
 run-container:
 	docker run --name ${container_name} -ti -p 8888:8888 -v ${PWD}:/home/jovyan/ ${image_name}
 
-run: build-image run-container
+run: build-image rm-container run-container

@@ -13,6 +13,8 @@ WORKDIR /home
 ENV TINI_VERSION v0.6.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
 RUN chmod +x /usr/bin/tini
+
+RUN pip install git+https://github.com/AI4Finance-LLC/FinRL-Library.git
 ENTRYPOINT ["/usr/bin/tini", "--"]
 
 

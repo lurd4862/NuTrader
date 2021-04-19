@@ -1,15 +1,19 @@
-ARG BASE_CONTAINER=jupyter/scipy-notebook
-FROM jupyter/scipy-notebook:latest
+FROM stablebaselines/rl-baselines3-zoo:0.11.0a4
 
-USER root
-
-# autosklearn requires swig, which no other image has
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends swig && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+COPY requirements.txt /tmp/
 
 
-USER $NB_UID
+RUN pip install -r /tmp/requirements.txt
 
-RUN pip install --quiet --no-cache-dir auto-sklearn
+RUN pip install jupyterlab
+
+
+WORKDIR /home
+# Add Tini. Tini operates as a process subreaper for jupyter. This prevents kernel crashes.
+ENV TINI_VERSION v0.6.0
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
+RUN chmod +x /usr/bin/tini
+ENTRYPOINT ["/usr/bin/tini", "--"]
+
+
+CMD ["jupyter", "lab", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--NotebookApp.token=''","--NotebookApp.password=''","--allow-root"]
